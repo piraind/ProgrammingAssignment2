@@ -1,14 +1,15 @@
-## Put comments here that give an overall description of what your
-## functions do
-## github test
+## R Programming Assignment 2
+## Understanding environments
+## makeCacheMatrix function that creates list for caching
+## cacheSolve calculates matrix inversion and caches the solution
 
-## Write a short comment describing this function
-
+## makeCacheMatrix
 makeCacheMatrix <- function(x = matrix()) {
       m<-NULL
       set<-function(y){
             x<<-y
             m<<-NULL
+            
       }
       get<-function() x
       setmatrix<-function(solve) m<<- solve
@@ -18,15 +19,17 @@ makeCacheMatrix <- function(x = matrix()) {
            getmatrix=getmatrix)
 }
 
+## cacheSolve
 cacheSolve <- function(x=matrix(), ...) {
       m<-x$getmatrix()
       if(!is.null(m)){
-            message("getting cached data")
+            message("cached")
             return(m)
       }
       matrix<-x$get ()
       m<-solve(matrix, ...)
       x$setmatrix(m)
+      message("inverted matrix no cache")
       m
 }
 
@@ -35,15 +38,20 @@ cacheSolve <- function(x=matrix(), ...) {
       # create test list matrix
       tmatrix <- makeCacheMatrix()
 
-      # set matrix in test list matrix
-      tmatrix$set(matrix(1:4,2,2))
-      str(tmatrix$get ()) # orginal matrix before first call
-      str(tmatrix$getmatrix ()) # cache before first call
+      ## set matrix in test list matrix
+      ## tmatrix$set(matrix(1:4,2,2))
+      ## make test matrix
+      set.seed(1)
+      test <- matrix(rnorm(5*5), 5, 5)
+      ## set test matrix in list matrix
+      tmatrix$set(test)
+      tmatrix$get () # orginal matrix before first call
+      tmatrix$getmatrix () # cache before first call
 
       # invert matirx first time
-      str(tmatrix$getmatrix ()) # cache before first call
+      tmatrix$getmatrix () # cache before first call
       cacheSolve(tmatrix)
-      str(tmatrix$getmatrix ()) # cache after first call
+      tmatrix$getmatrix () # cache after first call
 
       #invert matrix second time with cache
       cacheSolve(tmatrix) 
